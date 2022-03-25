@@ -46,6 +46,7 @@ namespace AWS.Deploy.CLI.Commands.TypeHints
 
             var userInputConfiguration = new UserInputConfiguration<ApplicationDescription>(
                 app => app.ApplicationName,
+                app => app.ApplicationName,
                 app => app.ApplicationName.Equals(currentTypeHintResponse?.ApplicationName),
                 currentTypeHintResponse.ApplicationName)
             {

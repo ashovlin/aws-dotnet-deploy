@@ -45,6 +45,7 @@ namespace AWS.Deploy.CLI.Commands.TypeHints
             var currentTypeHintResponse = recommendation.GetOptionSettingValue<IAMRoleTypeHintResponse>(optionSetting);
 
             var userInputConfiguration = new UserInputConfiguration<Role>(
+                role => role.Arn,
                 role => role.RoleName,
                 role => currentTypeHintResponse.RoleArn?.Equals(role.Arn) ?? false);
 

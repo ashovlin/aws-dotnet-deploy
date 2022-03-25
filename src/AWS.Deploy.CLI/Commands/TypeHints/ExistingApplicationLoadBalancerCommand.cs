@@ -44,6 +44,7 @@ namespace AWS.Deploy.CLI.Commands.TypeHints
             var currentValue = recommendation.GetOptionSettingValue<string>(optionSetting);
 
             var userInputConfiguration = new UserInputConfiguration<LoadBalancer>(
+                loadBalancer => loadBalancer.LoadBalancerArn,
                 loadBalancer => loadBalancer.LoadBalancerName,
                 loadBalancer => loadBalancer.LoadBalancerArn.Equals(currentValue))
             {

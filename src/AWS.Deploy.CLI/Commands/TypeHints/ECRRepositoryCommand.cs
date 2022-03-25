@@ -32,6 +32,7 @@ namespace AWS.Deploy.CLI.Commands.TypeHints
 
             var userInputConfiguration = new UserInputConfiguration<Repository>(
                 rep => rep.RepositoryName,
+                rep => rep.RepositoryName,
                 rep => rep.RepositoryName.Equals(currentRepositoryName),
                 currentRepositoryName)
             {

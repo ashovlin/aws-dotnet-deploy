@@ -534,6 +534,7 @@ namespace AWS.Deploy.CLI.Commands
 
             var userInputConfiguration = new UserInputConfiguration<CloudApplication>(
                 app => app.DisplayName,
+                app => app.DisplayName,
                 app => app.DisplayName.Equals(deployedApplications.First().DisplayName))
             {
                 AskNewName = false,
@@ -811,6 +812,7 @@ namespace AWS.Deploy.CLI.Commands
             if (setting.AllowedValues?.Count > 0)
             {
                 var userInputConfig = new UserInputConfiguration<string>(
+                    x => x,
                     x => setting.ValueMapping.ContainsKey(x) ? setting.ValueMapping[x] : x,
                     x => x.Equals(currentValue))
                 {
@@ -900,7 +902,8 @@ namespace AWS.Deploy.CLI.Commands
 
                 displayValue = ((IDisplayable?)response)?.ToDisplayString();
             }
-            else
+
+            if (displayValue == null)
             {
                 var value = recommendation.GetOptionSettingValue(optionSetting);
                 objectValues = value as Dictionary<string, object>;

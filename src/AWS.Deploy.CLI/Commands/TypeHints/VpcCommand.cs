@@ -58,6 +58,7 @@ namespace AWS.Deploy.CLI.Commands.TypeHints
             var vpcs = await GetData();
 
             var userInputConfig = new UserInputConfiguration<Vpc>(
+                vpc => vpc.VpcId,
                 vpc =>
                 {
                     var name = vpc.Tags?.FirstOrDefault(x => x.Key == "Name")?.Value ?? string.Empty;

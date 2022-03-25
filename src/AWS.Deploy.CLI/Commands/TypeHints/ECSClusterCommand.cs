@@ -43,6 +43,7 @@ namespace AWS.Deploy.CLI.Commands.TypeHints
             var currentTypeHintResponse = recommendation.GetOptionSettingValue<ECSClusterTypeHintResponse>(optionSetting);
 
             var userInputConfiguration = new UserInputConfiguration<Cluster>(
+                cluster => cluster.ClusterArn,
                 cluster => cluster.ClusterName,
                 cluster => cluster.ClusterArn.Equals(currentTypeHintResponse?.ClusterArn),
                 currentTypeHintResponse.NewClusterName)

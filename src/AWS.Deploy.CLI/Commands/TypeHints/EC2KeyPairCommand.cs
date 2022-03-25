@@ -46,6 +46,7 @@ namespace AWS.Deploy.CLI.Commands.TypeHints
 
             var userInputConfiguration = new UserInputConfiguration<KeyPairInfo>(
                 kp => kp.KeyName,
+                kp => kp.KeyName,
                 kp => kp.KeyName.Equals(currentValue)
                 )
             {
