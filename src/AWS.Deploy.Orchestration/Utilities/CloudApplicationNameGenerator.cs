@@ -68,12 +68,24 @@ namespace AWS.Deploy.Orchestration.Utilities
             // make sure the recommendation doesn't exist already in existingApplications
             var recommendation = recommendedPrefix;
             var suffix = 1;
+            var recommendationCharArray = recommendation.ToCharArray();
+            var digits = "";
+            for (int i = recommendationCharArray.Length - 1; i >= 0; i--)
+            {
+                if (char.IsDigit(recommendationCharArray[i]))
+                    digits = $"{recommendationCharArray[i]}{digits}";
+                else
+                    break;
+            }
+
+            var parseResult = int.TryParse(digits, out suffix);
+
             while (suffix < 100)
             {
                 if (existingApplications.All(x => x.Name != recommendation) && IsValidName(recommendation))
                     return recommendation;
 
-                recommendation = $"{recommendedPrefix}{suffix++}";
+                recommendation = $"{(parseResult ? recommendation.Substring(0, recommendation.Length - digits.Length) : recommendedPrefix)}{++suffix}";
             }
 
             throw new ArgumentException("Failed to generate a valid and unique name.");
