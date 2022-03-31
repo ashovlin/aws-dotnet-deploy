@@ -58,6 +58,12 @@ namespace AWS.Deploy.ServerMode.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Returns true, if the deployment server returns a success HTTP code.</returns>
         Task<bool> IsAlive(CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Stops the deployment server via the /api/v1/health/shutdown API.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        Task Shutdown(CancellationToken cancellationToken);
     }
 
     public class ServerModeSession : IServerModeSession, IDisposable
@@ -87,6 +93,18 @@ namespace AWS.Deploy.ServerMode.Client
             }
         }
 
+        private string ShutdownUrl
+        {
+            get
+            {
+                if (_baseUrl == null)
+                {
+                    throw new InvalidOperationException($"{nameof(_baseUrl)} must not be null.");
+                }
+
+                return $"{_baseUrl}/api/v1/health/shutdown";
+            }
+        }
         public ServerModeSession(int startPort = 10000, int endPort = 10100, string deployToolPath = "", bool diagnosticLoggingEnabled = false)
             : this(new CommandLineWrapper(diagnosticLoggingEnabled),
                 new HttpClientHandler(),
@@ -235,6 +253,13 @@ namespace AWS.Deploy.ServerMode.Client
             {
                 return false;
             }
+        }
+
+        public async Task Shutdown(CancellationToken cancellationToken)
+        {
+            var client = new HttpClient(_httpClientHandler);
+
+            await client.PostAsync(ShutdownUrl, new StringContent(string.Empty, Encoding.UTF8, "application/json"), cancellationToken);
         }
 
         #region Private methods
